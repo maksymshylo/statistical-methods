@@ -1,9 +1,7 @@
 import sys, os, argparse
 import json, time, string
 import numpy as np
-import matplotlib.pyplot as plt
 from PIL import Image
-import cv2
 from decimal import *
 
 EPS = 10**-320
