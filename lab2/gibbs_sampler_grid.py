@@ -158,9 +158,9 @@ def main():
     print("column accuracy", cols_acc)
     print("row accuracy",    rows_acc)
 
-    plt.imsave("input_image.png",image, cmap = 'binary')
-    plt.imsave("noised_image.png",noised_image, cmap = 'binary')
-    plt.imsave("output_image.png",output_image, cmap = 'binary')
+    plt.imsave("input_image_gibbs.png",image, cmap = 'binary')
+    plt.imsave("noised_image_gibbs.png",noised_image, cmap = 'binary')
+    plt.imsave("output_image_gibbs.png",output_image, cmap = 'binary')
 
 
 
