@@ -23,7 +23,7 @@ def find_cols(noised_image, p, pc_r, pc_c):
     # labels of column 0 or 1
     labels = np.arange(2)
     # column probability
-    cols_probabs = np.zeros((2,height))
+    cols_probabs = np.zeros((2,width))
     # temporary array of probabilities to get image with given columns and rows
     conditional_probab_array = np.zeros((2,height), dtype=np.float64)
     cond_probab = np.zeros((2))
@@ -36,7 +36,7 @@ def find_cols(noised_image, p, pc_r, pc_c):
             # sum of all possible values of r_j
             cols_probabs[c,j] = np.sum(cond_probab)
     # precise position of black columns
-    cols = np.zeros((height),dtype=int)
+    cols = np.zeros((width),dtype=int)
     # get columns  by generating from distribution
     for j in range(width):
         cols[j] = np.random.choice(labels,p=cols_probabs[:,j]/np.sum(cols_probabs[:,j]))
