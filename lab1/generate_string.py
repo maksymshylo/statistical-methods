@@ -8,10 +8,10 @@ from decimal import *
 EPS = 10**-320
 
 def get_bigrams(json_path, alphabet_list):
-	
-	"""
-	calculate bigrams from frequencies in json file
-	"""
+    
+    """
+    calculate bigrams from frequencies in json file
+    """
     if not os.path.isfile(json_path):
         raise Exception('frequencies.json does not exist')
 
