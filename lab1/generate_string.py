@@ -2,6 +2,7 @@ import sys, os, argparse
 import json, time, string
 import numpy as np
 from PIL import Image
+import matplotlib.pyplot as plt
 from decimal import *
 
 EPS = 10**-320
@@ -105,14 +106,19 @@ def main():
     parser.add_argument("noise_level", type=float, help="noise level of bernoulli distribution")
     args = parser.parse_args()
     alphabet_list = list(string.ascii_lowercase + ' ')
-
     reference_images = import_images("alphabet",alphabet_list)
-    input_image = string_to_image(args.input_string,reference_images,args.noise_level)
+    
+    input_image =  string_to_image(args.input_string,reference_images,noise_level=0)
+    noised_image = string_to_image(args.input_string,reference_images,args.noise_level)
     letters = list(reference_images.values())
     p_k = np.log(1/len(alphabet_list))
-    output_string = generete_string(input_image,args.noise_level,letters,p_k,alphabet_list)
+    output_string = generete_string(noised_image,args.noise_level,letters,p_k,alphabet_list)
+    output_image = string_to_image(output_string,reference_images,noise_level=0)
     print(output_string)
 
+    plt.imsave("input_image.png", input_image, cmap ="binary")
+    plt.imsave("noised_image.png", noised_image, cmap ="binary")
+    plt.imsave("output_image.png", output_image, cmap ="binary")
 
 
 
