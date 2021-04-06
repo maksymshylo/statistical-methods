@@ -29,3 +29,30 @@ python3 lab2/gibbs_sampler_grid.py height_of_image width_of_image number_of_gene
 python3 lab2/precise_solution.py 20 20 5 0.3 0.5
 python3 lab2/precise_solution.py 10 10 3 0.2 0.5
 ```
+## Lab 2 - Gibbs Sampler for recognizing string over another one with noise
+#### Examples
+```bash
+python3 row_over_row.py input_string_1 input_string_2 noise_level number_of_iterations
+
+cd lab3/
+
+python3 row_over_row.py 'row' 'owr' 0.2 10
+python3 row_over_row.py 'swap' 'paws' 0.33 30
+python3 row_over_row.py 'stressed' 'desserts' 0.33 100
+```
+##### some other examples of possible input strings with the same widths:
+```
+deliver <=> reviled
+animal <=> lamina
+depots <=> stoped
+diaper <=> repaid
+drawer <=> reward
+looter <=> retool
+murder <=> redrum
+redips <=> spider
+debut <=> tubed
+deeps <=> speed
+peels <=> sleep
+serif <=> fires
+steel <=> leets
+````
