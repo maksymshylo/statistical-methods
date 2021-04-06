@@ -29,7 +29,7 @@ python3 lab2/gibbs_sampler_grid.py height_of_image width_of_image number_of_gene
 python3 lab2/precise_solution.py 20 20 5 0.3 0.5
 python3 lab2/precise_solution.py 10 10 3 0.2 0.5
 ```
-## Lab 2 - Gibbs Sampler for recognizing string over another one with noise
+## Lab 3 - Gibbs Sampler for recognizing string over another one with noise
 #### Examples
 ```bash
 python3 row_over_row.py input_string_1 input_string_2 noise_level number_of_iterations

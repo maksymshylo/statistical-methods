@@ -1,5 +1,5 @@
 import sys, os, argparse
-import json, time, string
+import json, string
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
