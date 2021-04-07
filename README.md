@@ -9,7 +9,7 @@ python3 generate_string.py input_string noise_level
 cd lab1/
 
 python3 generate_string.py 'some noised string' 0.2
-python3 generate_string.py 'hello world' 0.35
+python3 generate_string.py 'hello world'        0.35
 ```
 ## Lab 2 - Recognizing Black Vertical and Horizontal Lines
 #### Examples
@@ -19,7 +19,7 @@ python3 generate_string.py 'hello world' 0.35
 python3 lab2/gibbs_sampler_grid.py height_of_image width_of_image number_of_generated_lines noise_level column_probability number_of_iterations
 
 python3 lab2/gibbs_sampler_grid.py 100 100 20 0.33 0.5 100
-python3 lab2/gibbs_sampler_grid.py 50 50 10 0.33 0.5 100
+python3 lab2/gibbs_sampler_grid.py 50  50  10 0.33 0.5 100
 ```
 ##### `Precise Solution`
 
@@ -36,9 +36,9 @@ python3 row_over_row.py input_string_1 input_string_2 noise_level number_of_iter
 
 cd lab3/
 
-python3 row_over_row.py 'row' 'owr' 0.2 10
-python3 row_over_row.py 'swap' 'paws' 0.33 30
-python3 row_over_row.py 'stressed' 'desserts' 0.33 100
+python3 row_over_row.py 'row'   'owr'   0.2  10
+python3 row_over_row.py 'swap'  'paws'  0.33 30
+python3 row_over_row.py 'hello' 'world' 0.2  20
 ```
 ##### some other examples of possible input strings with the same widths:
 ```

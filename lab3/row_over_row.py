@@ -131,7 +131,7 @@ def generete_string(input_image, p, letters, bigrams, alphabet_list, mask):
     output_string = []
     width_prev_letter = 0
     
-    p_k = bigrams[-1,:]
+    p_k = bigrams[-2,:]
     while input_image[:,width_prev_letter:].size != 0:
         # cut input_image based on previous letter
         input_image = input_image[:,width_prev_letter:]
@@ -180,6 +180,34 @@ def recognize_strings(noised_image, noise_level, letters, reference_images, bigr
         mask = np.logical_not(output_image_2)
     return output_string_1, output_image_1, output_string_2, output_image_2
 
+def add_one_px_space(alphabet_list,reference_images,bigrams):
+    """
+    add symbol with one pixel width to generate images with different width
+    """
+    alphabet_list+=['|']
+    reference_images['|'] = np.zeros((reference_images[' '].shape[0],1),dtype=int)
+    bigrams =  np.pad(bigrams, [(0,1),(0,1)], mode = 'constant', constant_values = 1/(len(alphabet_list)-1))
+    return alphabet_list, reference_images, bigrams
+
+def transform_images(img1,img2):
+	"""
+	make both image the same size 
+	"""
+    if img1.shape[1] == img2.shape[1]:
+        return img1, img2
+    elif img1.shape[1] < img2.shape[1]:
+        diff_width = img2.shape[1] - img1.shape[1]
+        img1 = np.hstack(( img1,
+                          np.zeros((img1.shape[0], diff_width))
+                        ))
+        return img1, img2
+    else:
+        diff_width = img1.shape[1] - img2.shape[1]
+        img2 = np.hstack(( img2,
+                          np.zeros((img2.shape[0], diff_width))
+                        ))
+        return img1, img2
+
 
 def main():
 
@@ -196,16 +224,17 @@ def main():
     alphabet_list = list(string.ascii_lowercase + ' ')
     reference_images = import_images("alphabet",alphabet_list)
     bigrams = get_bigrams('frequencies.json', alphabet_list)
+    alphabet_list, reference_images, bigrams = \
+    	add_one_px_space(alphabet_list, reference_images, bigrams)
     letters = list(reference_images.values())
 
-    input_image_1 =  string_to_image(args.input_string_1,reference_images)
-    input_image_2 =  string_to_image(args.input_string_2,reference_images)
+    input_image_1 =  string_to_image(args.input_string_1, reference_images)
+    input_image_2 =  string_to_image(args.input_string_2, reference_images)
+    # make both image the same size 
+    input_image_1, input_image_2 = transform_images(input_image_1, input_image_2)
 
-    if input_image_1.shape[1] != input_image_2.shape[1]:
-        raise Exception("input images must have the same size")
-
-    input_image   =  np.logical_or(input_image_1,input_image_2)
-    noised_image  =  apply_noise(input_image,args.noise_level)
+    input_image   =  np.logical_or(input_image_1, input_image_2)
+    noised_image  =  apply_noise(input_image, args.noise_level)
 
     output_string_1, output_image_1, output_string_2, output_image_2 =  \
         recognize_strings(noised_image, args.noise_level, letters, \
