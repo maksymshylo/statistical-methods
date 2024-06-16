@@ -122,7 +122,7 @@ options:
 
 #### Examples
 ```bash
-python3 lab2/gibbs_sampler.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5 --n_iter 100
+ $ python3 lab2/precise_solution.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5
 ```
 > column accuracy 82.0
 > 
