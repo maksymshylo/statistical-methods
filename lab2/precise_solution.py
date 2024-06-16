@@ -1,95 +1,112 @@
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
-import random
-from gibbs_sampler_grid import (create_image, 
-     apply_noise,
-     get_output_image,
-     get_accuracy,
-     generate_lines,
-    )
+
+from utilities import *
 
 
-def find_cols(noised_image, p, pc_r, pc_c):
-    
+def generate_precise_columns(
+    image: np.ndarray, noise_level: float, column_prob: np.ndarray
+) -> np.ndarray:
     """
-    compute precise columns for relatively small images  
+    Note: Works fast for relatively small images.
 
-    p - noise level
-    pc_r, pc_c - probability of row or column to be black
+    Args:
+        image
+        noise_level: Probability of bernoulli distribution.
+        column_prob
+
+    Returns:
+        Precise positions of black columns.
     """
 
-    height, width = noised_image.shape
+    height, width = image.shape
     # labels of column 0 or 1
     labels = np.arange(2)
     # column probability
-    cols_probabs = np.zeros((2,width))
+    cols_probs = np.zeros((2, width))
     # temporary array of probabilities to get image with given columns and rows
-    conditional_probab_array = np.zeros((2,height), dtype=np.float64)
-    cond_probab = np.zeros((2))
+    cond_prob_arr = np.zeros((2, height), dtype=np.float64)
+    cond_prob = np.zeros((2))
     for c in labels:
         for j in range(width):
             for r_j in labels:
                 for i in range(height):
-                    conditional_probab_array[r_j,i] = (noised_image[i,j]^(c or r_j))*p + (noised_image[i,j]^(1 - c or r_j))*(1-p)
-                cond_probab[r_j] = np.prod(conditional_probab_array[r_j,:])*pc_r[r_j]
+                    cond_prob_arr[r_j, i] = (image[i, j] ^ (c or r_j)) * noise_level + (
+                        image[i, j] ^ (1 - c or r_j)
+                    ) * (1 - noise_level)
+                cond_prob[r_j] = np.prod(cond_prob_arr[r_j, :]) * column_prob[r_j]
             # sum of all possible values of r_j
-            cols_probabs[c,j] = np.sum(cond_probab)
+            cols_probs[c, j] = np.sum(cond_prob)
+
     # precise position of black columns
-    cols = np.zeros((width),dtype=int)
-    # get columns  by generating from distribution
+    generated_cols = np.zeros((width), dtype=int)
+    # get columns by generating from distribution
     for j in range(width):
-        cols[j] = np.random.choice(labels,p=cols_probabs[:,j]/np.sum(cols_probabs[:,j]))
-    return cols
+        generated_cols[j] = np.random.choice(
+            labels, p=cols_probs[:, j] / np.sum(cols_probs[:, j])
+        )
 
-
-def precise_solution(noised_image, p, pc):
-
-    """
-    calculates rows and cols positions
-
-    p - noise level
-    pc_r, pc_c - probability of row or column to be black
-
-    """
-
-    pc_r = pc**np.arange(2)*(1-pc)**(1-np.arange(2))
-    pc_c = pc**np.arange(2)*(1-pc)**(1-np.arange(2))
-    cols = find_cols(noised_image, p, pc_r, pc_c)
-    # generating rows by fixing columns
-    rows = generate_lines(image=noised_image,
-                          fixed_generated=cols,
-                          p=p,
-                          apriori_prob=pc_c,
-                          object_="rows")
-
-    return cols, rows
-
+    return generated_cols
 
 
 def main():
     # parse input parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument("height", type=int, help="height of input_image")
-    parser.add_argument("width", type=int, help="width of input_image")
-    parser.add_argument("n_generated_lines", type=int, help="number of horizontal and vertical lines")
-    parser.add_argument("noise_level", type=float, help="noise level of bernoulli distribution")
-    parser.add_argument("column_probab", type=float, help="probability of column to be black")
+    parser.add_argument("--h", type=int, required=True, help="Height of image.")
+    parser.add_argument("--w", type=int, required=True, help="Width of image.")
+    parser.add_argument(
+        "--n_lines",
+        type=int,
+        required=True,
+        help="Number of horizontal and vertical lines.",
+    )
+    parser.add_argument(
+        "--noise_level",
+        required=True,
+        type=float,
+        help="Noise level of bernoulli distribution.",
+    )
+    parser.add_argument(
+        "--column_prob",
+        type=float,
+        required=True,
+        help="Probability of column to be black.",
+    )
 
     args = parser.parse_args()
 
-    image, true_cols, true_rows = create_image(args.height, args.width, args.n_generated_lines)
-    noised_image = apply_noise(image, args.noise_level)
-    cols, rows = precise_solution(noised_image, args.noise_level, args.column_probab)
-    cols_acc, rows_acc = get_accuracy(true_cols, true_rows, cols, rows)
-    output_image = get_output_image(cols, rows)
+    image, true_cols, true_rows = generate_image(
+        height=args.h, width=args.w, n_lines=args.n_lines
+    )
+    noised_image = apply_bernoulli_noise(image, args.noise_level)
+
+    pc_r = args.column_prob ** np.arange(2) * (1 - args.column_prob) ** (
+        1 - np.arange(2)
+    )
+    generated_cols = generate_precise_columns(
+        image=noised_image, noise_level=args.noise_level, column_prob=pc_r
+    )
+    # generating rows by fixing columns
+    generated_rows = generate_lines(
+        image=noised_image,
+        fixed_generated=generated_cols,
+        noise_level=args.noise_level,
+        apriori_prob=pc_r,
+        lines_type="rows",
+    )
+
+    cols_acc, rows_acc = get_accuracy(
+        true_cols, true_rows, generated_cols, generated_rows
+    )
     print("column accuracy", cols_acc)
-    print("row accuracy",    rows_acc)
+    print("row accuracy", rows_acc)
 
-    plt.imsave("input_image_precise.png",image, cmap = 'binary')
-    plt.imsave("noised_image_precise.png",noised_image, cmap = 'binary')
-    plt.imsave("output_image_precise.png",output_image, cmap = 'binary')
+    output_image = build_output_image(generated_cols, generated_rows)
 
+    plt.imsave("input_image_precise.png", image, cmap="binary")
+    plt.imsave("noised_image_precise.png", noised_image, cmap="binary")
+    plt.imsave("output_image_precise.png", output_image, cmap="binary")
 
 
 if __name__ == "__main__":

@@ -52,7 +52,7 @@ Decoded string:  "billy herrington"
 | ![](.imgs/lab1/test1/input_image.png) | ![](.imgs/lab1/test1/noised_image.png) | ![](.imgs/lab1/test1/decoded_image.png) |
 
 ```bash
-python3 lab1/generate_string.py --input_string "billy herrington" --noise_level 0.45 --seed 45
+python3 lab1/generate_string.py --input_string "van darkholme" --noise_level 0.45 --seed 45
 ```
 Decoded string:  "nde deauff sc"
 
@@ -61,23 +61,78 @@ Decoded string:  "nde deauff sc"
 | ![](.imgs/lab1/test2/input_image.png) | ![](.imgs/lab1/test2/noised_image.png) | ![](.imgs/lab1/test2/decoded_image.png) |
 
 
-## Lab 2 - Recognition of black vertical and horizontal lines using Gibbs Sampling
+## Lab 2 - Recognition of black vertical and horizontal lines
+
+### Description
+> The program creates an image with black vertical and horizontal lines,
+> apply bernoulli noise, and denoise it.
+
+##### `Gibbs Sampling`
+
+### Usage
+```commandline
+$ python3 lab2/gibbs_sampler.py --help
+usage: gibbs_sampler.py [-h] [--h H] [--w W] [--n_lines N_LINES]
+                        [--noise_level NOISE_LEVEL]
+                        [--column_prob COLUMN_PROB] [--n_iter N_ITER]
+
+options:
+  -h, --help            show this help message and exit
+  --h H                 Height of image.
+  --w W                 Width of image.
+  --n_lines N_LINES     Number of horizontal and vertical lines.
+  --noise_level NOISE_LEVEL
+                        Noise level of bernoulli distribution.
+  --column_prob COLUMN_PROB
+                        Probability of column to be black.
+  --n_iter N_ITER       Number of iterations for Gibbs Sampler.
+```
+
 #### Examples
-
 ```bash
-python3 lab2/gibbs_sampler_grid.py height_of_image width_of_image number_of_generated_lines noise_level column_probability number_of_iterations
-
-python3 lab2/gibbs_sampler_grid.py 100 100 20 0.33 0.5 100
-python3 lab2/gibbs_sampler_grid.py 50  50  10 0.33 0.5 100
+python3 lab2/gibbs_sampler.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5 --n_iter 100
 ```
-##### `Precise Solution`
+> column accuracy 91.0
+> 
+> row accuracy 94.0
 
+| Original image                                                    |                           Noised image                            | Decoded image                                                     |
+|-------------------------------------------------------------------|:-----------------------------------------------------------------:|-------------------------------------------------------------------|
+| ![](.imgs/lab2/gibbs-sampler-test/input_image_gibbs_sampler.png)  | ![](.imgs/lab2/gibbs-sampler-test/noised_image_gibbs_sampler.png) | ![](.imgs/lab2/gibbs-sampler-test/output_image_gibbs_sampler.png) |
+
+
+##### `Precise solution`
+
+### Usage
+```commandline
+ $ python3 lab2/precise_solution.py --help
+usage: precise_solution.py [-h] --h H --w W --n_lines N_LINES --noise_level NOISE_LEVEL --column_prob COLUMN_PROB
+
+options:
+  -h, --help            show this help message and exit
+  --h H                 Height of image.
+  --w W                 Width of image.
+  --n_lines N_LINES     Number of horizontal and vertical lines.
+  --noise_level NOISE_LEVEL
+                        Noise level of bernoulli distribution.
+  --column_prob COLUMN_PROB
+                        Probability of column to be black.
+```
+
+
+#### Examples
 ```bash
-python3 lab2/gibbs_sampler_grid.py height_of_image width_of_image number_of_generated_lines noise_level column_probability
-
-python3 lab2/precise_solution.py 20 20 5 0.3 0.5
-python3 lab2/precise_solution.py 10 10 3 0.2 0.5
+python3 lab2/gibbs_sampler.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5 --n_iter 100
 ```
+> column accuracy 82.0
+> 
+> row accuracy 88.0
+
+| Original image                                                  |                          Noised image                          | Decoded image                                                  |
+|-----------------------------------------------------------------|:--------------------------------------------------------------:|----------------------------------------------------------------|
+| ![](.imgs/lab2/precise-solution-test/input_image_precise.png)   | ![](.imgs/lab2/precise-solution-test/noised_image_precise.png) | ![](.imgs/lab2/precise-solution-test/output_image_precise.png) |
+
+
 
 ## Lab 3 - Gibbs Sampler for recognizing a noised string over another one
 
