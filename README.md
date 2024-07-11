@@ -184,13 +184,6 @@ The second decoded string:  reviled
 ```bash
  $ python3 lab3/row_over_row.py --string_1 'hello' --string_2 'world' --noise_level 0.35 --n_iter 25 --seed 67
 ```
-> The first decoded string:  deliver
-> The second decoded string:  reviled
-
-| Input string over string image               | Noised string over string image                     | Decoded string 1                          |             Decoded string 2              |
-|----------------------------------------------|-----------------------------------------------------|-------------------------------------------|:-----------------------------------------:|
-| ![](.imgs/lab3/test2/string_over_string.png) | ![](.imgs/lab3/test2/string_over_string_noised.png) | ![](.imgs/lab3/test2/output_string_1.png) | ![](.imgs/lab3/test2/output_string_2.png) |
-
 
 ```commandline
 Iteration 0. String 1: h|e|||||||||rdo||||; String 2: wo||||||||h||ld.
@@ -223,6 +216,11 @@ Input string 2:  world
 The first decoded string:  hello||||
 The second decoded string:  world
 ```
+
+| Input string over string image               | Noised string over string image                     | Decoded string 1                          |             Decoded string 2              |
+|----------------------------------------------|-----------------------------------------------------|-------------------------------------------|:-----------------------------------------:|
+| ![](.imgs/lab3/test2/string_over_string.png) | ![](.imgs/lab3/test2/string_over_string_noised.png) | ![](.imgs/lab3/test2/output_string_1.png) | ![](.imgs/lab3/test2/output_string_2.png) |
+
 
 #### Some other examples of possible input strings with the same widths:
 ```
