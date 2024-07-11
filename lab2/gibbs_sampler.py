@@ -6,6 +6,8 @@ import numpy as np
 
 from utilities import *
 
+SEED = 67
+
 
 def gibbs_sampler(
     image: np.ndarray, noise_level: float, column_prob: np.ndarray, n_iter: int
@@ -16,12 +18,13 @@ def gibbs_sampler(
         image: Input noised image.
         noise_level: Probability of bernoulli distribution.
         column_prob: Probability of  column to be black.
-        n_iter - number of iterations for Gibbs Sampler
+        n_iter: Number of Gibbs Sampler iterations.
 
     Returns:
         Generated cols and rows.
     """
     # fix rows and cols
+    np.random.seed(SEED)
     generated_rows = np.random.randint(2, size=image.shape[0])
     generated_cols = np.zeros_like(generated_rows)
     # calculate apriori probability for set of rows (columns) to be black

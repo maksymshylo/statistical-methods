@@ -1,12 +1,13 @@
 import numpy as np
-import random
 from numba import njit
 
 from typing import Tuple
 
+SEED = 67
+
 
 def generate_image(
-    height: int, width: int, n_lines: int
+    height: int, width: int, n_lines: int,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Generate image with black lines.
@@ -22,8 +23,9 @@ def generate_image(
     true_rows = np.zeros((height,), dtype=int)
     true_cols = np.zeros((width,), dtype=int)
 
-    rows_indices = random.sample(range(0, height), n_lines)
-    cols_indices = random.sample(range(0, width), n_lines)
+    np.random.seed(SEED)
+    rows_indices = np.random.choice(range(height), n_lines, replace=False)
+    cols_indices = np.random.choice(range(width), n_lines, replace=False)
 
     true_rows[rows_indices] = 1
     true_cols[cols_indices] = 1
@@ -35,6 +37,7 @@ def generate_image(
 
 
 def apply_bernoulli_noise(image: np.ndarray, noise_level: float) -> np.ndarray:
+    np.random.seed(SEED)
     ksi = np.random.binomial(size=image.size, n=1, p=noise_level).reshape(image.shape)
     return ksi ^ image
 
@@ -69,7 +72,8 @@ def get_accuracy(
 @njit
 def random_choice(distribution):
     # generate random number from a given distribution
-    r = random.uniform(0, 1)
+    np.random.seed(SEED)
+    r = np.random.uniform(0, 1)
     s = 0
     for item, prob in enumerate(distribution):
         s += prob

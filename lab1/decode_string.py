@@ -129,7 +129,7 @@ class StringImageDecoder:
         letter_1_im: np.ndarray,
         letter_2_im: np.ndarray,
         bigram_letter_prob: float,
-    ) -> Decimal:
+    ) -> np.ndarray:
         """
         Calculate conditional probability of 2 images using bernoulli distribution.
 
@@ -138,15 +138,15 @@ class StringImageDecoder:
             letter_2_im: The second image.
         """
         if self.noise == 0:
-            _cond_prob = np.sum((letter_1_im ^ letter_2_im) * np.log(self.noise + EPS))
+            _cond_prob = (letter_1_im ^ letter_2_im) * np.log(self.noise + EPS)
         elif self.noise == 1:
-            _cond_prob = np.sum((1 ^ letter_1_im ^ letter_2_im) * np.log(EPS))
+            _cond_prob = (1 ^ letter_1_im ^ letter_2_im) * np.log(EPS)
         else:
-            _cond_prob = np.sum(
-                (letter_1_im ^ letter_2_im) * np.log(self.noise)
-                + (1 ^ letter_1_im ^ letter_2_im) * np.log(1 - self.noise)
-            )
-        return _cond_prob + bigram_letter_prob
+            _cond_prob = (letter_1_im ^ letter_2_im) * np.log(self.noise) + (
+                1 ^ letter_1_im ^ letter_2_im
+            ) * np.log(1 - self.noise)
+
+        return np.sum(_cond_prob) + bigram_letter_prob
 
     def __calculate_prob_sum__(
         self, image: np.ndarray, bigram_p_k: np.ndarray

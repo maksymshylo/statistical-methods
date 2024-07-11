@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 from utilities import *
 
+SEED = 67
+
 
 def generate_precise_columns(
     image: np.ndarray, noise_level: float, column_prob: np.ndarray
@@ -19,7 +21,7 @@ def generate_precise_columns(
     Returns:
         Precise positions of black columns.
     """
-
+    np.random.seed(SEED)
     height, width = image.shape
     # labels of column 0 or 1
     labels = np.arange(2)

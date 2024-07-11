@@ -7,7 +7,7 @@ To run these applications you need to have **Python3.10**.
 
 1. Clone repo:
 ```bash
-git clone https://github.com/maksymshylo/computational_geometry.git
+git clone https://github.com/maksymshylo/statistical-methods.git
 ```
 2. Create virtual environment.
 ```bash
@@ -90,11 +90,11 @@ options:
 
 #### Examples
 ```bash
-python3 lab2/gibbs_sampler.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5 --n_iter 100
+ $ python3 lab2/gibbs_sampler.py --h 250 --w 250 --n_lines 40 --noise_level 0.42 --column_prob 0.5 --n_iter 100
 ```
-> column accuracy 91.0
+> **column accuracy 99.6**
 > 
-> row accuracy 94.0
+> **row accuracy 99.6**
 
 | Original image                                                    |                           Noised image                            | Decoded image                                                     |
 |-------------------------------------------------------------------|:-----------------------------------------------------------------:|-------------------------------------------------------------------|
@@ -122,11 +122,11 @@ options:
 
 #### Examples
 ```bash
- $ python3 lab2/precise_solution.py --h 100 --w 100 --n_lines 20 --noise_level 0.42 --column_prob 0.5
+ $ python3 lab2/precise_solution.py --h 250 --w 250 --n_lines 40 --noise_level 0.42 --column_prob 0.5
 ```
-> column accuracy 82.0
+> **column accuracy 96.8**
 > 
-> row accuracy 88.0
+> **row accuracy 99.2**
 
 | Original image                                                  |                          Noised image                          | Decoded image                                                  |
 |-----------------------------------------------------------------|:--------------------------------------------------------------:|----------------------------------------------------------------|
@@ -138,16 +138,93 @@ options:
 
 > Note: Lengths of string should be the same.
 
+### Usage
+```commandline
+ $ python3 lab3/row_over_row.py --help
+usage: row_over_row.py [-h] --string_1 STRING_1 --string_2 STRING_2 --noise_level NOISE_LEVEL --n_iter N_ITER [--seed SEED]
+
+options:
+  -h, --help            show this help message and exit
+  --string_1 STRING_1   The first string to decode.
+  --string_2 STRING_2   The second string to decode.
+  --noise_level NOISE_LEVEL
+                        Noise level of bernoulli distribution.
+  --n_iter N_ITER       Number of Gibbs Sampler iterations.
+  --seed SEED           Seed to debug
+
+```
+
 #### Examples
 ```bash
-python3 row_over_row.py input_string_1 input_string_2 noise_level number_of_iterations
-
-
-python3 row_over_row.py 'row'   'owr'   0.2  10
-python3 row_over_row.py 'swap'  'paws'  0.33 30
-python3 row_over_row.py 'hello' 'world' 0.2  20
+python3 lab3/row_over_row.py --string_1 'deliver' --string_2 'reviled' --noise_level 0.3 --n_iter 10 --seed 67
 ```
-##### some other examples of possible input strings with the same widths:
+```commandline
+Decoding strings...
+Iteration 0. String 1: deliver; String 2: reviled.
+Iteration 1. String 1: deliver; String 2: reviled.
+Iteration 2. String 1: deliver; String 2: reviled.
+Iteration 3. String 1: deliver; String 2: reviled.
+Iteration 4. String 1: deliver; String 2: reviled.
+Iteration 5. String 1: deliver; String 2: reviled.
+Iteration 6. String 1: deliver; String 2: reviled.
+Iteration 7. String 1: deliver; String 2: reviled.
+Iteration 8. String 1: deliver; String 2: reviled.
+Iteration 9. String 1: deliver; String 2: reviled.
+Input string 1:  deliver
+Input string 2:  reviled
+The first decoded string:  deliver
+The second decoded string:  reviled
+```
+
+| Input string over string image               | Noised string over string image                     | Decoded string 1                          |             Decoded string 2              |
+|----------------------------------------------|-----------------------------------------------------|-------------------------------------------|:-----------------------------------------:|
+| ![](.imgs/lab3/test1/string_over_string.png) | ![](.imgs/lab3/test1/string_over_string_noised.png) | ![](.imgs/lab3/test1/output_string_1.png) | ![](.imgs/lab3/test1/output_string_2.png) |
+
+
+```bash
+ $ python3 lab3/row_over_row.py --string_1 'hello' --string_2 'world' --noise_level 0.35 --n_iter 25 --seed 67
+```
+> The first decoded string:  deliver
+> The second decoded string:  reviled
+
+| Input string over string image               | Noised string over string image                     | Decoded string 1                          |             Decoded string 2              |
+|----------------------------------------------|-----------------------------------------------------|-------------------------------------------|:-----------------------------------------:|
+| ![](.imgs/lab3/test2/string_over_string.png) | ![](.imgs/lab3/test2/string_over_string_noised.png) | ![](.imgs/lab3/test2/output_string_1.png) | ![](.imgs/lab3/test2/output_string_2.png) |
+
+
+```commandline
+Iteration 0. String 1: h|e|||||||||rdo||||; String 2: wo||||||||h||ld.
+Iteration 1. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 2. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 3. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||||||||||||||||ld.
+Iteration 4. String 1: h|||z|||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 5. String 1: he||||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 6. String 1: he||||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 7. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 8. String 1: he||||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 9. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 10. String 1: he||||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 11. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 12. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 13. String 1: he||||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 14. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||h||ld.
+Iteration 15. String 1: h|e|||||||||r||||||||||||o||||; String 2: wo||||||||||||||||||||||ld.
+Iteration 16. String 1: h||e||||||||r||||||||||||o||||; String 2: world.
+Iteration 17. String 1: hello||||; String 2: world.
+Iteration 18. String 1: hello||||; String 2: world.
+Iteration 19. String 1: hello||||; String 2: world.
+Iteration 20. String 1: hello||||; String 2: world.
+Iteration 21. String 1: hello||||; String 2: world.
+Iteration 22. String 1: hello||||; String 2: world.
+Iteration 23. String 1: hello||||; String 2: world.
+Iteration 24. String 1: hello||||; String 2: world.
+Input string 1:  hello
+Input string 2:  world
+The first decoded string:  hello||||
+The second decoded string:  world
+```
+
+#### Some other examples of possible input strings with the same widths:
 ```
 deliver <=> reviled
 animal <=> lamina
