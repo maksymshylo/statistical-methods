@@ -1,26 +1,6 @@
 # Statistical Methods of Pattern Recognition
 Laboratory work from the university course.
 
-## Setup
-
-To run these applications you need to have **Python3.10**.
-
-1. Clone repo:
-```bash
-git clone https://github.com/maksymshylo/statistical-methods.git
-```
-2. Create virtual environment.
-```bash
-python3.10 -m venv .venv
-```
-3. Activate it
-```bash
-source .venv/bin/activate
-```
-4. Install requirements:
-```bash
-pip install -r requirements.txt
-```
 
 ## Lab 1 - Recognition of a noised image.
 
@@ -43,7 +23,7 @@ options:
 
 ### Examples
 ```bash
-python3 lab1/generate_string.py --input_string "billy herrington" --noise_level 0.35 --seed 45
+python3 lab1/decode_string.py --input_string "billy herrington" --noise_level 0.35 --seed 45
 ```
 Decoded string:  "billy herrington"
 
@@ -52,7 +32,7 @@ Decoded string:  "billy herrington"
 | ![](.imgs/lab1/test1/input_image.png) | ![](.imgs/lab1/test1/noised_image.png) | ![](.imgs/lab1/test1/decoded_image.png) |
 
 ```bash
-python3 lab1/generate_string.py --input_string "van darkholme" --noise_level 0.45 --seed 45
+python3 lab1/decode_string.py --input_string "van darkholme" --noise_level 0.45 --seed 45
 ```
 Decoded string:  "nde deauff sc"
 
@@ -238,3 +218,23 @@ peels <=> sleep
 serif <=> fires
 steel <=> leets
 ````
+
+## Setup
+
+To run these applications, you need to have **Python3.12**.
+
+1. Clone repo:
+
+2. Create virtual environment.
+    ```bash
+    python3.12 -m venv .venv
+    ```
+3. Activate it
+    ```bash
+    source .venv/bin/activate
+    ```
+
+4. Install requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
